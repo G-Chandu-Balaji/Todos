@@ -5,6 +5,15 @@
   align-items: center;
   margin: 20px auto;
 }
+h1 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #09517e;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
 .input-container {
   display: flex;
   gap: 10px;
@@ -81,6 +90,6 @@
   color: white;
 }
 #editbtn {
-  background-color: rgb(58, 58, 200);
+  background-color: #ffc107;
   color: white;
 }

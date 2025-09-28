@@ -22,7 +22,8 @@ function App() {
     FetchData();
   }, [refresh]);
 
-  const handleAddTask = async () => {
+  const handleAddTask = async (e) => {
+    e.preventDefault();
     if (!task.trim()) return;
     try {
       const res = await fetch(URL, {
@@ -68,8 +69,8 @@ function App() {
     }
   };
 
-  const handleUpdateTask = async (id, editTask) => {
-    if (!editTask.trim()) return;
+  const handleUpdateTask = async (id, task, isCompleted = false) => {
+    if (!task.trim()) return;
     try {
       const res = await fetch(`${URL}/${id}`, {
         method: "PUT",
@@ -77,7 +78,8 @@ function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          task: editTask,
+          task,
+          isCompleted,
         }),
       });
 
@@ -95,40 +97,85 @@ function App() {
   };
   return (
     <div className="app-container">
+      <h1>TODO</h1>
       <div className="input-container">
-        <input
-          placeholder="enter the task..."
-          onChange={(e) => setTask(e.target.value)}
-          value={task}
-        />
-        <button onClick={handleAddTask}>Add</button>
+        <form onSubmit={handleAddTask}>
+          <input
+            placeholder="enter the task..."
+            onChange={(e) => setTask(e.target.value)}
+            value={task}
+          />
+          <button>Add</button>
+        </form>
       </div>
       <div className="tasks-container">
         {todo.map((item) => (
           <div key={item._id} className="task-container">
-            <input type="checkbox" id="iscomplete" />
+            <input
+              type="checkbox"
+              id="iscomplete"
+              checked={item.isCompleted}
+              onChange={() =>
+                handleUpdateTask(item._id, item.task, !item.isCompleted)
+              }
+              disabled={isEditing == item._id}
+              style={{
+                cursor: isEditing == item._id ? "not-allowed" : "pointer",
+              }}
+            />
 
             {isEditing == item._id ? (
               <div>
                 <input
-                  defaultValue={item.task}
                   value={editTask}
                   onChange={(e) => setEditTask(e.target.value)}
                 />
-                <button onClick={() => handleUpdateTask(item._id, editTask)}>
+                <button
+                  onClick={() => {
+                    handleUpdateTask(item._id, editTask);
+                    setIsEditing(null);
+                  }}
+                >
                   save
                 </button>
                 <button onClick={() => setIsEditing(null)}>cancel</button>
               </div>
             ) : (
-              <p>{item.task}</p>
+              <p
+                style={{
+                  textDecoration: item.isCompleted ? "line-through" : "none",
+                  color: item.isCompleted ? "#989292" : "#2c2a2a",
+                }}
+              >
+                {item.task}
+              </p>
             )}
             <div className="btns">
-              <button id="editbtn" onClick={() => setIsEditing(item._id)}>
+              <button
+                id="editbtn"
+                onClick={() => {
+                  setIsEditing(item._id);
+                  setEditTask(item.task);
+                }}
+                disabled={item.isCompleted}
+                style={{
+                  background: item.isCompleted ? "#b4b3b3" : "#ffc107",
+                  cursor: item.isCompleted ? "not-allowed" : "pointer",
+                }}
+              >
                 Edit
               </button>
 
-              <button id="deletebtn" onClick={() => handleDeleteTask(item._id)}>
+              <button
+                id="deletebtn"
+                onClick={() => handleDeleteTask(item._id)}
+                disabled={isEditing == item._id}
+                style={{
+                  background:
+                    isEditing == item._id ? "#b4b3b3" : "rgb(200, 27, 27)",
+                  cursor: isEditing == item._id ? "not-allowed" : "pointer",
+                }}
+              >
                 Delete
               </button>
             </div>
