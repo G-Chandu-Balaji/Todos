@@ -1,0 +1,15 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.input-container {
+}
+
+.tasks-container {
+  display: flex;
+}
+.task-container {
+  display: flex;
+}
