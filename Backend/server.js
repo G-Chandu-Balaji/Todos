@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import todoRoutes from "./Routes/todo.route.js";
+import cors from "cors";
+
 dotenv.config();
 
 let app = new express();
@@ -18,6 +20,7 @@ mongoose
 
 //Middleware
 app.use(express.json());
+app.use(cors());
 
 //routes
 app.use("/api/todos", todoRoutes);

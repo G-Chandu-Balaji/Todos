@@ -28,3 +28,40 @@ export async function AddTask(req, res) {
     res.status(500).json({ error: "Failed to Add task" });
   }
 }
+export async function DeleteTask(req, res) {
+  try {
+    const { id } = req.params;
+    const deletetask = await todoModel.findByIdAndDelete(id);
+    if (!deletetask) {
+      return res.status(400).json({ error: " task task not found" });
+    }
+
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete task" });
+  }
+}
+
+export async function EditTask(req, res) {
+  try {
+    const { id } = req.params;
+    const { task, isCompleted } = req.body;
+    const updatedTask = await todoModel.findByIdAndUpdate(
+      id,
+      {
+        task,
+        isCompleted,
+      },
+      { new: true }
+    );
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not Found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "task updated successfully", updatedTask });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to Update task" });
+  }
+}
