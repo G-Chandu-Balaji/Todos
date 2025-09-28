@@ -6,7 +6,7 @@ function App() {
   const [refresh, setRefersh] = useState(false);
   const [task, setTask] = useState("");
   const [editTask, setEditTask] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
   const URL = "http://localhost:5100/api/todos";
   useEffect(() => {
     const FetchData = async () => {
@@ -106,7 +106,9 @@ function App() {
       <div className="tasks-container">
         {todo.map((item) => (
           <div key={item._id} className="task-container">
-            {isEditing ? (
+            <input type="checkbox" id="iscomplete" />
+
+            {isEditing == item._id ? (
               <div>
                 <input
                   defaultValue={item.task}
@@ -116,16 +118,20 @@ function App() {
                 <button onClick={() => handleUpdateTask(item._id, editTask)}>
                   save
                 </button>
-                <button onClick={() => setIsEditing(false)}>cancel</button>
+                <button onClick={() => setIsEditing(null)}>cancel</button>
               </div>
             ) : (
               <p>{item.task}</p>
             )}
-            <input type="checkbox" id="iscomplete"></input>
-            <label for="iscomplete">completed</label>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
+            <div className="btns">
+              <button id="editbtn" onClick={() => setIsEditing(item._id)}>
+                Edit
+              </button>
 
-            <button onClick={() => handleDeleteTask(item._id)}>Delete</button>
+              <button id="deletebtn" onClick={() => handleDeleteTask(item._id)}>
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
