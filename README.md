@@ -15,8 +15,7 @@ The app communicates with a backend API (Node.js + Express + MongoDB) to persist
 
 ## Features
 
--- Add a new task
-
+- Add a new task
 - Edit an existing task (disabled if task is completed)
 - Mark a task as **completed / not completed**
 - Delete a task
