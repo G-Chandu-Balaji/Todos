@@ -6,8 +6,8 @@ import cors from "cors";
 
 dotenv.config();
 
-let app = new express();
-let port = process.env.PORT || 5000;
+const app = new express();
+let port = process.env.PORT || 5100;
 
 //Database connection
 mongoose

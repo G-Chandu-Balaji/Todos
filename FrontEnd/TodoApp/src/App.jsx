@@ -8,6 +8,7 @@ function App() {
   const [editTask, setEditTask] = useState("");
   const [isEditing, setIsEditing] = useState(null);
   const URL = "http://localhost:5100/api/todos";
+
   useEffect(() => {
     const FetchData = async () => {
       try {
@@ -22,9 +23,13 @@ function App() {
     FetchData();
   }, [refresh]);
 
+  //....................Add Task......................
   const handleAddTask = async (e) => {
     e.preventDefault();
-    if (!task.trim()) return;
+    if (!task.trim()) {
+      alert("enter a  valid task");
+      return;
+    }
     try {
       const res = await fetch(URL, {
         method: "POST",
@@ -47,6 +52,8 @@ function App() {
       setRefersh((prev) => !prev);
     }
   };
+
+  //.........................  Delete task............................
   const handleDeleteTask = async (id) => {
     try {
       const res = await fetch(`${URL}/${id}`, {
@@ -69,8 +76,12 @@ function App() {
     }
   };
 
+  //...................UpdateTask..............................
   const handleUpdateTask = async (id, task, isCompleted = false) => {
-    if (!task.trim()) return;
+    if (!task.trim()) {
+      alert("edited task should not be empty");
+      return;
+    }
     try {
       const res = await fetch(`${URL}/${id}`, {
         method: "PUT",
@@ -95,9 +106,11 @@ function App() {
       setRefersh((prev) => !prev);
     }
   };
+
   return (
     <div className="app-container">
       <h1>TODO</h1>
+      {/*.......... task input............. */}
       <div className="input-container">
         <form onSubmit={handleAddTask}>
           <input
@@ -108,9 +121,12 @@ function App() {
           <button>Add</button>
         </form>
       </div>
+
+      {/*............ Render the todo tasks......... */}
       <div className="tasks-container">
         {todo.map((item) => (
           <div key={item._id} className="task-container">
+            {/*...... checkbox .........*/}
             <input
               type="checkbox"
               id="iscomplete"
@@ -123,7 +139,7 @@ function App() {
                 cursor: isEditing == item._id ? "not-allowed" : "pointer",
               }}
             />
-
+            {/*.... task or editTask......... */}
             {isEditing == item._id ? (
               <div>
                 <input
@@ -150,6 +166,8 @@ function App() {
                 {item.task}
               </p>
             )}
+
+            {/*........... buttos............. */}
             <div className="btns">
               <button
                 id="editbtn"

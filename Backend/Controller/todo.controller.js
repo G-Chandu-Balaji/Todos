@@ -33,7 +33,7 @@ export async function DeleteTask(req, res) {
     const { id } = req.params;
     const deletetask = await todoModel.findByIdAndDelete(id);
     if (!deletetask) {
-      return res.status(400).json({ error: " task task not found" });
+      return res.status(400).json({ error: " task not found" });
     }
 
     res.status(200).json({ message: "Task deleted successfully" });
